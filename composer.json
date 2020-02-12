@@ -20,9 +20,8 @@
     },
     "require-dev": {
         "ergebnis/license": "~0.1.0",
-        "phpunit/phpunit": "^8.5.2",
-        "narrowspark/coding-standard": "^3.4.0",
         "infection/infection": "~0.15.2",
+        "narrowspark/coding-standard": "^3.4.0",
         "phpunit/phpunit": "^9.0.0"
     },
     "config": {
@@ -50,17 +49,17 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
+        "changelog": "changelog-generator generate --config=\".changelog\" --file --prepend",
         "coverage": [
             "phpunit --dump-xdebug-filter=./.phpunit.xdebug-filter.php",
             "phpunit --prepend=./.phpunit.xdebug-filter.php --coverage-html=./build/logs"
         ],
         "cs": "php-cs-fixer fix -v",
         "cs-check": "php-cs-fixer fix -v --dry-run --stop-on-violation",
+        "infection": "infection",
         "phpstan": "phpstan analyse -c phpstan.neon src --memory-limit=-1",
         "psalm": "psalm",
-        "test": "phpunit",
-        "infection": "infection",
-        "changelog": "changelog-generator generate --config=\".changelog\" --file --prepend"
+        "test": "phpunit"
     },
     "support": {
         "issues": "https://github.com/narrowspark/php-library-template/issues",

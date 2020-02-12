@@ -8,7 +8,7 @@ use Narrowspark\CS\Config\Config;
 $license = License\Type\MIT::markdown(
     __DIR__ . '/LICENSE.md',
     License\Range::since(
-        License\Year::fromString('2017'),
+        License\Year::fromString('2020'),
         new \DateTimeZone('UTC')
     ),
     License\Holder::fromString('Daniel Bannert'),
