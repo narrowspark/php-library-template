@@ -35,12 +35,11 @@ RUN { \
         echo "realpath_cache_size=4096K"; \
         echo "realpath_cache_ttl=600"; \
         echo "error_reporting = E_ALL"; \
-        echo "display_startup_errors = Off"; \
+        echo "display_startup_errors = On"; \
         echo "ignore_repeated_errors = Off"; \
         echo "ignore_repeated_source = Off"; \
-        echo "html_errors = Off"; \
-        echo "track_errors = Off"; \
-        echo "display_errors = Off"; \
+        echo "html_errors = On"; \
+        echo "display_errors = On"; \
         echo "log_errors = On"; \
         echo "error_log = /var/log/php/cli-error.log"; \
     } > /usr/local/etc/php/php.ini
