@@ -1,0 +1,68 @@
+name: 'PHP Code Coverage'
+
+on:
+  push:
+    paths:
+      - "**.php"
+  pull_request:
+    paths:
+      - "**.php"
+
+env:
+  REQUIRED_PHP_EXTENSIONS: "mbstring"
+  REQUIRED_INI_VALUES: "date.timezone=Europe/Berlin, opcache.enable_cli=1, serialize_precision=14, pcov.directory=api"
+  REQUIRED_TOOLS: "composer, composer-prefetcher, cs2pr"
+
+jobs:
+  code-coverage:
+    name: "Code Coverage"
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version:
+          - "7.4.2"
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@1.8.2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
+          ini-values: "${{ env.REQUIRED_INI_VALUES }}"
+          tools: "${{ env.REQUIRED_TOOLS }}"
+          coverage: "pcov"
+
+      - name: "Configure Container"
+        run: |
+          echo "::set-env name=PHPUNIT::./vendor/bin/phpunit --verbose"
+          echo "::set-env name=COMPOSER_UP::composer update --no-progress --no-suggest --no-interaction --prefer-source --ansi"
+          echo "::set-env name=PHPUNIT_COVERAGE::true"
+
+      - name: "Check PHP Version"
+        run: php -v
+
+      - name: "Check Composer Version"
+        run: composer -V
+
+      - name: "Validate composer.json and composer.lock"
+        run: "composer validate --strict"
+
+      - name: "List all php extensions with versions"
+        run: php -r 'foreach (get_loaded_extensions() as $extension) echo $extension . " " . phpversion($extension) . PHP_EOL;'
+
+      - name: "Install locked dependencies with composer"
+        run: $COMPOSER_UP
+
+      - name: "Collect code coverage"
+        run: $PHPUNIT --configuration=./phpunit.xml.dist --coverage-clover=./.build/logs/clover.xml
+
+      - name: "Send code coverage report to Codecov.io"
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: bash <(curl -s https://codecov.io/bash)

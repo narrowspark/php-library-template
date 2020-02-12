@@ -1,0 +1,69 @@
+{
+    "name": "narrowspark/php-library-template",
+    "type": "library",
+    "description": "Provides a GitHub repository template for a Narrowspark PHP library, using GitHub actions.",
+    "keywords": [
+        "narrowspark"
+    ],
+    "homepage": "http://github.com/narrowspark/php-library-template",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Bannert",
+            "email": "d.bannert@anolilab.de",
+            "homepage": "http://www.anolilab.de",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "ergebnis/license": "~0.1.0",
+        "phpunit/phpunit": "^8.5.2",
+        "narrowspark/coding-standard": "^3.4.0",
+        "infection/infection": "~0.15.2",
+        "phpunit/phpunit": "^9.0.0"
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Narrowspark\\Library\\": "src/"
+        },
+        "exclude-from-classmap": [
+            "/tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Narrowspark\\Library\\Test\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "coverage": [
+            "phpunit --dump-xdebug-filter=./.phpunit.xdebug-filter.php",
+            "phpunit --prepend=./.phpunit.xdebug-filter.php --coverage-html=./build/logs"
+        ],
+        "cs": "php-cs-fixer fix -v",
+        "cs-check": "php-cs-fixer fix -v --dry-run --stop-on-violation",
+        "phpstan": "phpstan analyse -c phpstan.neon src --memory-limit=-1",
+        "psalm": "psalm",
+        "test": "phpunit",
+        "infection": "infection",
+        "changelog": "changelog-generator generate --config=\".changelog\" --file --prepend"
+    },
+    "support": {
+        "issues": "https://github.com/narrowspark/php-library-template/issues",
+        "source": "https://github.com/narrowspark/php-library-template"
+    }
+}
