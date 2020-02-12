@@ -5,9 +5,6 @@
             "src"
         ]
     },
-    "phpUnit": {
-        "configDir": "tests\/Unit"
-    },
     "logs": {
         "text": "./build/infection/infection-log.txt"
     }
