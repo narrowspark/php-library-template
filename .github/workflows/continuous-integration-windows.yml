@@ -1,0 +1,95 @@
+name: "Continuous Integration on Windows"
+
+on:
+  push:
+    paths:
+      - '**.php'
+  pull_request:
+    paths:
+      - '**.php'
+
+env:
+  REQUIRED_PHP_EXTENSIONS: "mbstring"
+  REQUIRED_INI_VALUES: "date.timezone=Europe/Berlin, opcache.enable_cli=1, serialize_precision=14"
+  REQUIRED_TOOLS: "composer, composer-prefetcher"
+
+jobs:
+  WindowsIntegration:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        php-versions:
+          - "7.4.2"
+
+        dependencies:
+          - "highest"
+          - "lowest"
+
+    name: "PHP ${{ matrix.php-versions }} Test on windows-latest OS with ${{ matrix.dependencies }} dependencies"
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@1.8.2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
+          ini-values: "${{ env.REQUIRED_INI_VALUES }}"
+          tools: "${{ env.REQUIRED_TOOLS }}"
+          coverage: none
+
+      - name: "Configure container"
+        env:
+          NARROWSPARK_EMAIL: ${{ secrets.NARROWSPARK_EMAIL }}
+          NARROWSPARK_USERNAME: ${{ secrets.NARROWSPARK_USERNAME }}
+        run: |
+          $SOURCE_NAME = ${env:GITHUB_REF} -replace 'refs\/\w+\/', ''
+          $SOURCE_BRANCH = ${env:GITHUB_REF} -replace 'refs\/heads\/', ''
+          $SOURCE_TAG = ${env:GITHUB_REF} -replace 'refs\/tags\/', ''
+
+          echo "::set-env name=PHPUNIT::.\vendor\bin\phpunit --verbose -c .\phpunit.xml.dist"
+          echo "::set-env name=COMPOSER_UP::composer update --no-progress --no-suggest --no-interaction --ansi"
+          echo "::set-env name=SOURCE_NAME::$SOURCE_NAME"
+          echo "::set-env name=SOURCE_BRANCH::$SOURCE_BRANCH"
+          echo "::set-env name=SOURCE_TAG::$SOURCE_TAG"
+
+          if (${env:NARROWSPARK_EMAIL}) {
+            git config --global user.email "${env:NARROWSPARK_EMAIL}"
+          } else {
+            git config --global user.email "d.bannert@anolilab.de"
+          }
+
+          if (${env:NARROWSPARK_USERNAME}) {
+            git config --global user.name "${env:NARROWSPARK_USERNAME}"
+          } else {
+            git config --global user.name "prisis"
+          }
+
+      - name: "Check PHP Version"
+        run: php -v
+
+      - name: "List all php extensions with versions"
+        run: php -r 'foreach (get_loaded_extensions() as $extension) echo $extension . " " . phpversion($extension) . PHP_EOL;'
+
+      - name: "Setup Problem Matchers for PHPUnit"
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: "Check Composer Version"
+        run: composer -V
+
+      - name: "Validate composer.json and composer.lock"
+        run: "composer validate --strict"
+
+      - name: "Install highest dependencies"
+        if: matrix.dependencies == 'highest'
+        run: $COMPOSER_UP
+
+      - name: "Install lowest dependencies"
+        if: matrix.dependencies == 'lowest'
+        run: $COMPOSER_UP --prefer-lowest --prefer-stable
+
+      - name: "Run Test's Suite"
+        run: $PHPUNIT

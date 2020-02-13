@@ -1,0 +1,16 @@
+includes:
+    - vendor/narrowspark/coding-standard/base_rules.neon
+
+parameters:
+    paths:
+        - src
+        - tests
+
+    autoload_directories:
+        - %currentWorkingDirectory%/src
+
+    tmpDir: %currentWorkingDirectory%/build/phpstan
+
+    excludes_analyse:
+
+    ignoreErrors:

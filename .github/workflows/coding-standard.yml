@@ -1,0 +1,72 @@
+name: "Coding Standard"
+
+on:
+  push:
+    paths:
+      - "**.php"
+  pull_request:
+    paths:
+      - "**.php"
+
+env:
+  REQUIRED_PHP_EXTENSIONS: "mbstring"
+  REQUIRED_INI_VALUES: "date.timezone=Europe/Berlin, opcache.enable_cli=1"
+  REQUIRED_TOOLS: "composer, composer-prefetcher, cs2pr"
+
+jobs:
+  php-cs-fixer:
+    name: "PHP-CS-Fixer"
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version:
+          - "7.4.2"
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@1.8.2
+        with:
+          php-version: "${{ matrix.php-version }}"
+          extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
+          ini-values: "${{ env.REQUIRED_INI_VALUES }}"
+          tools: "${{ env.REQUIRED_TOOLS }}"
+          coverage: none
+
+      - name: "Configure Container"
+        env:
+          NARROWSPARK_EMAIL: ${{ secrets.NARROWSPARK_EMAIL }}
+          NARROWSPARK_USERNAME: ${{ secrets.NARROWSPARK_USERNAME }}
+        run: |
+          echo "::set-env name=COMPOSER_UP::composer update --no-progress --no-suggest --no-interaction --prefer-source --ansi"
+
+          EMAIL=${NARROWSPARK_EMAIL:-"d.bannert@anolilab.de"}
+          NAME=${NARROWSPARK_USERNAME:-"prisis"}
+
+          git config --global user.email "${EMAIL}"
+          git config --global user.name "${NAME}"
+
+      - name: "Check PHP Version"
+        run: php -v
+
+      - name: "Check Composer Version"
+        run: composer -V
+
+      - name: "Validate composer.json and composer.lock"
+        run: "composer validate --strict"
+
+      - name: "List all php extensions with versions"
+        run: php -r 'foreach (get_loaded_extensions() as $extension) echo $extension . " " . phpversion($extension) . PHP_EOL;'
+
+      - name: "Install Narrowspark coding standard"
+        run: composer global require narrowspark/coding-standard:3.4.0 ergebnis/license:0.1.0 --no-interaction --no-progress --profile --no-suggest --optimize-autoloader
+
+      - name: "lint php code"
+        run: |
+          cd $GITHUB_WORKSPACE
+          /home/runner/.composer/vendor/bin/php-cs-fixer fix --config=$GITHUB_WORKSPACE/.php_cs -v --dry-run --format=checkstyle | cs2pr
