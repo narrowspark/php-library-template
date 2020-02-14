@@ -22,7 +22,7 @@
         "ergebnis/license": "~0.1.0",
         "infection/infection": "~0.15.2",
         "narrowspark/coding-standard": "^3.4.0",
-        "phpunit/phpunit": "^9.0.0"
+        "phpunit/phpunit": "^9.0.1"
     },
     "config": {
         "preferred-install": "dist",
