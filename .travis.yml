@@ -23,7 +23,7 @@ install:
 jobs:
   include:
     - stage: Coverage
-      php: 7.3
+      php: 7.4.2
       env: REMOVE_XDEBUG=false
       script:
         - bash -xc "$TEST -c ./phpunit.xml --coverage-clover=coverage.xml"

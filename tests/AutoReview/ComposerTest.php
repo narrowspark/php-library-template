@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Narrowspark\Library\Tests\AutoReview;
 
 use PHPUnit\Framework\TestCase;
-use function json_decode;
-use function file_get_contents;
 
 /**
  * @internal
@@ -23,6 +21,8 @@ use function file_get_contents;
  * @coversNothing
  * @group auto-review
  * @group covers-nothing
+ *
+ * @medium
  */
 final class ComposerTest extends TestCase
 {
@@ -35,24 +35,27 @@ final class ComposerTest extends TestCase
 
     public function testBranchAlias(): void
     {
-        $composerJson = json_decode(file_get_contents(__DIR__.'/../../composer.json'), true);
+        /** @var array<string, mixed> $composerJson */
+        $composerJson = json_decode(
+            (string) file_get_contents(__DIR__ . '/../../composer.json'),
+            true,
+            512,
+            \JSON_THROW_ON_ERROR
+        );
 
-        if (!isset($composerJson['extra']['branch-alias'])) {
+        if (! isset($composerJson['extra']['branch-alias'])) {
+            /** @psalm-suppress InternalMethod */
             $this->addToAssertionCount(1); // composer.json doesn't contain branch alias, all good!
+
             return;
         }
 
-        static::assertSame(
+        self::assertSame(
             ['dev-master' => $this->convertAppVersionToAliasedVersion(self::VERSION)],
             $composerJson['extra']['branch-alias']
         );
     }
 
-    /**
-     * @param string $version
-     *
-     * @return string
-     */
     private function convertAppVersionToAliasedVersion(string $version): string
     {
         $parts = explode('.', $version, 3);

@@ -9,7 +9,7 @@
     "extra": {
         "prefetcher": {
             "require": {
-                "phpunit/phpunit": "^9.0",
+                "phpunit/phpunit": "^8.0",
                 "friendsofphp/php-cs-fixer": "^2.16.0"
             }
         },
