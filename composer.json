@@ -21,7 +21,7 @@
     "require-dev": {
         "ergebnis/license": "~0.1.0",
         "infection/infection": "~0.15.3",
-        "narrowspark/coding-standard": "^3.4.0",
+        "narrowspark/coding-standard": "^4.0.0",
         "phpunit/phpunit": "^9.0.1"
     },
     "config": {
