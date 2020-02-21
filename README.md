@@ -16,6 +16,10 @@ $ composer require narrowspark/php-library-template
 
 :bulb: This is a great place for showing a few usage examples!
 
+## Versioning
+
+This library follows semantic versioning, and additions to the code ruleset are performed in major releases.
+
 ## Changelog
 
 Please have a look at [`CHANGELOG.md`](CHANGELOG.md).

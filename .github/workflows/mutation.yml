@@ -1,3 +1,5 @@
+# https://help.github.com/en/categories/automating-your-workflow-with-github-actions
+
 name: "Mutation testing"
 
 on:
@@ -7,13 +9,6 @@ on:
   pull_request:
     paths:
       - "**.php"
-
-env:
-  MIN_COVERED_MSI: 100
-  MIN_MSI: 100
-  REQUIRED_PHP_EXTENSIONS: "mbstring"
-  REQUIRED_INI_VALUES: "date.timezone=Europe/Berlin, opcache.enable_cli=1, pcov.directory=api"
-  REQUIRED_TOOLS: "composer, composer-prefetcher, cs2pr"
 
 jobs:
   narrowspark-infection:
@@ -25,19 +20,42 @@ jobs:
       matrix:
         php-versions: ["7.4.2"]
 
+    env:
+      key: "mutation-v1" # change key (version) to clear cache
+      min-covered-msi: 100
+      min-msi: 100
+      extensions: "mbstring"
+      ini-values: "date.timezone=Europe/Berlin, opcache.enable_cli=1, pcov.directory=api"
+      tools: "composer, composer-prefetcher, cs2pr"
+
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
 
-      - name: "Setup PHP"
-        uses: shivammathur/setup-php@1.8.2
+      - name: "Setup cache environment"
+        id: cache-env
+        uses: shivammathur/cache-extensions@v1
         with:
-          php-version: "${{ matrix.php-version }}"
-          extensions: "${{ env.REQUIRED_PHP_EXTENSIONS }}"
-          ini-values: "${{ env.REQUIRED_INI_VALUES }}"
-          tools: "${{ env.REQUIRED_TOOLS }}"
-          coverage: "pcov"
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: "Cache extensions"
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.cache-env.outputs.dir }}
+          key: ${{ steps.cache-env.outputs.key }}
+          restore-keys: ${{ steps.cache-env.outputs.key }}
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@2.0.0
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          ini-values: ${{ env.ini-values }}
+          tools: ${{ env.tools }}
+          coverage: xdebug
 
       - name: "Configure Container"
         env:
@@ -52,6 +70,9 @@ jobs:
           git config --global user.email "${EMAIL}"
           git config --global user.name "${NAME}"
 
+      - name: "Setup Problem Matchers for PHP"
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
       - name: "Check PHP Version"
         run: php -v
 
@@ -59,13 +80,27 @@ jobs:
         run: composer -V
 
       - name: "Validate composer.json and composer.lock"
-        run: "composer validate --strict"
+        run: composer validate --strict
 
       - name: "List all php extensions with versions"
         run: php -r 'foreach (get_loaded_extensions() as $extension) echo $extension . " " . phpversion($extension) . PHP_EOL;'
 
-      - name: "Install highest dependencies"
-        run: $COMPOSER_UP
+      - name: "Get Composer Cache Directory"
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: "Cache dependencies"
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/.build/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: "Install highest .build dependencies"
+        run: $COMPOSER_UP --working-dir=./.build --lock
 
       - name: "mutation tests"
-        run: ./vendor/bin/infection --ignore-msi-with-no-mutations --min-covered-msi=${{ env.MIN_COVERED_MSI }} --min-msi=${{ env.MIN_MSI }}
+        run: |
+          sed -i 's#"./vendor#"./.build/vendor#g' phpunit.xml
+          sed -i 's#<directory>./vendor#<directory>./.build/vendor#g' phpunit.xml
+          composer --working-dir=./.build infection -- --ignore-msi-with-no-mutations --min-covered-msi=${{ env.min-covered-msi }} --min-msi=${{ env.min-msi }}

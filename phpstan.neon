@@ -9,7 +9,7 @@ parameters:
     autoload_directories:
         - %currentWorkingDirectory%/src
 
-    tmpDir: %currentWorkingDirectory%/build/phpstan
+    tmpDir: %currentWorkingDirectory%/.build/phpstan
 
     excludes_analyse:
 

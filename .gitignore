@@ -3,16 +3,25 @@
 # they will never get commited within any project you have.
 
 composer.phar
-composer.lock
+/composer.lock
 
 .php_cs.cache
 .phpunit.result.cache
 .phpunit.xdebug-filter.php
 
-infectionlog.json
-infectionlog.txt
+infection.log
 
-/build/logs/
-/build/phpstan/
+/.build/infection/
+!/.build/infection/.gitkeep
+/.build/php-cs-fixer/
+!/.build/php-cs-fixer/.gitkeep
+/.build/phpunit/
+!/.build/phpunit/.gitkeep
+/.build/psalm/
+!/.build/psalm/.gitkeep
+
+/.build/vendor
+/.build/logs/
+
 /vendor/
 /node_modules/

@@ -2,10 +2,22 @@
     "timeout": 10,
     "source": {
         "directories": [
-            "src"
+            "./../src"
         ]
     },
     "logs": {
-        "text": "./build/infection/infection-log.txt"
+        "text": "infection/infection-log.txt"
+    },
+    "phpUnit": {
+        "configDir": "./",
+        "customPath": "./vendor/phpunit/phpunit/phpunit"
+    },
+    "mutators": {
+        "@default": true,
+        "FalseValue": false,
+        "TrueValue": false,
+        "IncrementInteger": false,
+        "DecrementInteger": false,
+        "ArrayItemRemoval": false
     }
 }

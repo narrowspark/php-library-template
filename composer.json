@@ -19,10 +19,9 @@
         "php": "^7.4"
     },
     "require-dev": {
-        "ergebnis/license": "~0.1.0",
-        "infection/infection": "~0.15.2",
-        "narrowspark/coding-standard": "^3.4.0",
-        "phpunit/phpunit": "^9.0.0"
+        "ext-json": "*",
+        "phpunit/phpunit": "^8.5.2 || ^9.0.0",
+        "johnkary/phpunit-speedtrap": "^3.2.0"
     },
     "config": {
         "preferred-install": "dist",
@@ -31,6 +30,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
+        },
+        "prefetcher": {
+            "require": {
+                "phpunit/phpunit": "^9.0"
+            }
         }
     },
     "autoload": {
@@ -43,23 +47,26 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Narrowspark\\Library\\Test\\": "tests/"
+            "Narrowspark\\Library\\Tests\\": "tests/"
         }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-        "changelog": "changelog-generator generate --config=\".changelog\" --file --prepend",
+        "changelog": "composer --working-dir=./.build changelog-generator",
         "coverage": [
-            "phpunit --dump-xdebug-filter=./.phpunit.xdebug-filter.php",
-            "phpunit --prepend=./.phpunit.xdebug-filter.php --coverage-html=./build/logs"
+            "phpunit --dump-xdebug-filter=./.build/phpunit/.xdebug-filter.php",
+            "phpunit --prepend=./.build/phpunit/.xdebug-filter.php --coverage-html=./.build/phpunit/coverage"
         ],
-        "cs": "php-cs-fixer fix -v",
-        "cs-check": "php-cs-fixer fix -v --dry-run --stop-on-violation",
-        "infection": "infection",
-        "phpstan": "phpstan analyse -c phpstan.neon src --memory-limit=-1",
-        "psalm": "psalm",
-        "test": "phpunit"
+        "cs": "composer --working-dir=./.build cs -- -v",
+        "cs:check": "composer --working-dir=./.build cs:check -- -v",
+        "phpstan": "composer --working-dir=./.build phpstan -- --memory-limit=-1",
+        "psalm": "composer --working-dir=./.build psalm",
+        "psalm:fix": "composer --working-dir=./.build psalm:fix",
+        "infection": "composer --working-dir=./.build infection -- --min-covered-msi=100 --min-msi=100",
+        "test": "phpunit",
+        "post-install-cmd": "composer --working-dir=./.build install",
+        "post-update-cmd": "composer --working-dir=./.build update"
     },
     "support": {
         "issues": "https://github.com/narrowspark/php-library-template/issues",
