@@ -1,18 +1,14 @@
 # https://help.github.com/en/categories/automating-your-workflow-with-github-actions
 
-name: "Mutation testing"
+name: "License update"
 
 on:
-  push:
-    paths:
-      - "**.php"
-  pull_request:
-    paths:
-      - "**.php"
+  schedule:
+    - cron: "1 0 1 1 *"
 
 jobs:
-  narrowspark-infection:
-    name: "Infection"
+  narrowspark-license-update:
+    name: "License update"
 
     runs-on: ubuntu-latest
 
@@ -21,11 +17,9 @@ jobs:
         php-versions: ["7.4.2"]
 
     env:
-      key: "mutation-v1" # change key (version) to clear cache
-      min-covered-msi: 100
-      min-msi: 100
+      key: "license-update-linux-v1" # change key (version) to clear cache
       extensions: "mbstring"
-      ini-values: "date.timezone=Europe/Berlin, opcache.enable_cli=1, pcov.directory=api"
+      ini-values: "date.timezone=Europe/Berlin, opcache.enable_cli=1"
       tools: "composer, composer-prefetcher, cs2pr"
 
     steps:
@@ -55,7 +49,7 @@ jobs:
           extensions: ${{ env.extensions }}
           ini-values: ${{ env.ini-values }}
           tools: ${{ env.tools }}
-          coverage: xdebug
+          coverage: none
 
       - name: "Configure Container"
         env:
@@ -93,11 +87,25 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/.build/composer.json') }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: "Install highest dependencies"
-        run: $COMPOSER_UP --lock
+      - name: "Install highest .build dependencies"
+        run: $COMPOSER_UP --working-dir=./.build --lock
 
-      - name: "mutation tests"
-        run: composer --working-dir=./.build infection -- --ignore-msi-with-no-mutations --min-covered-msi=${{ env.min-covered-msi }} --min-msi=${{ env.min-msi }}
+      - name: "Run friendsofphp/php-cs-fixer"
+        run: composer --working-dir=./.build cs:check -- --diff --diff-format=udiff --verbose
+
+      - name: "Open pull request updating license year"
+        uses: gr2m/create-or-update-pull-request-action@v1.2.9
+        with:
+          author: "Daniel Bannert <d.bannert@anolilab.de>"
+          branch: "feature/license-year"
+          body: |
+            This PR
+            * [x] updates the license year
+          commit-message: "Enhancement: Update license year"
+          path: "."
+          title: "Enhancement: Update license year"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

@@ -17,23 +17,29 @@ $license = License\Type\MIT::markdown(
 
 $license->save();
 
-$config = new Config($license->header(), []);
+$config = new Config($license->header(), [
+    // @todo waiting for php-cs-fixer 2.16.2
+    'global_namespace_import' => [
+        'import_classes' => true,
+        'import_constants' => false,
+        'import_functions' => false,
+    ]
+]);
 
 $config->getFinder()
     ->files()
     ->in(__DIR__)
     ->exclude([
-        'build',
-        'vendor',
+        '.build',
         '.dependabot',
+        '.docker',
         '.github',
+        'vendor',
     ])
     ->name('*.php')
     ->ignoreDotFiles(true)
     ->ignoreVCS(true);
 
-$cacheDir = getenv('TRAVIS') ? getenv('HOME') . '/.php-cs-fixer' : __DIR__;
-
-$config->setCacheFile($cacheDir . '/.php_cs.cache');
+$config->setCacheFile(__DIR__ . '/.build/php-cs-fixer/.php_cs.cache');
 
 return $config;

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * @see https://github.com/narrowspark/php-library-template
  */
 
-namespace Narrowspark\Library\Test\Unit;
+namespace Narrowspark\Library\Tests\Unit;
 
 use Narrowspark\Library\Example;
 use PHPUnit\Framework;

@@ -58,8 +58,7 @@ RUN { \
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer && \
-    composer global require phploc/phploc && \
-    composer global require ergebnis/composer-normalize
+    composer global require phploc/phploc ergebnis/composer-normalize narrowspark/automatic-composer-prefetcher narrowspark/automatic-security-audit
 
 ARG INSTALL_XDEBUG
 ARG XDEBUG_VERSION
