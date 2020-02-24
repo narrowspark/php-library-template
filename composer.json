@@ -20,7 +20,7 @@
     },
     "require-dev": {
         "ext-json": "*",
-        "phpunit/phpunit": "^8.5.2 || ^9.0.0",
+        "phpunit/phpunit": "^9.0.1",
         "johnkary/phpunit-speedtrap": "^3.2.0"
     },
     "config": {
