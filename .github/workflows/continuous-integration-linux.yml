@@ -5,10 +5,12 @@ name: "Continuous Integration on Linux"
 on:
   push:
     paths:
-      - '**.php'
+      - "**.php"
+      - "composer.json"
   pull_request:
     paths:
-      - '**.php'
+      - "**.php"
+      - "composer.json"
 
 jobs:
   LinuxIntegration:
