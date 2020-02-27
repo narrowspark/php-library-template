@@ -16,7 +16,9 @@
         "merge-plugin": {
             "include": [
                 "../composer.json"
-            ]
+            ],
+            "merge-extra": false,
+            "merge-scripts": false
         }
     },
     "scripts": {
