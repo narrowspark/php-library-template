@@ -4,6 +4,8 @@ imports:
 parameters:
     php_version_features: '7.4'
 
+    project_type: "open-source"
+
     sets:
         - 'action-injection-to-constructor-injection'
         - 'array-str-functions-to-static-call'
@@ -19,3 +21,4 @@ parameters:
         - 'php71'
         - 'php72'
         - 'php73'
+        - 'php74'
