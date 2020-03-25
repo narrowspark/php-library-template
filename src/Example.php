@@ -15,7 +15,8 @@ namespace Narrowspark\Library;
 
 final class Example
 {
-    private $name;
+    /** @var string */
+    private string $name;
 
     private function __construct(string $name)
     {
