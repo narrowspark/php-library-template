@@ -1,8 +1,8 @@
 imports:
-    - { resource: './vendor/thecodingmachine/safe/rector-migrate-0.6.yml' }
+    - { resource: './vendor/thecodingmachine/safe/rector-migrate-0.7.yml' }
 
 parameters:
-    php_version_features: '7.4' # change the php version to yo
+    php_version_features: '7.4'
 
     project_type: "open-source"
 
