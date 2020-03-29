@@ -16,7 +16,8 @@
         }
     ],
     "require": {
-        "php": "^7.4"
+        "php": "^7.4",
+        "thecodingmachine/safe": "^1.1.0"
     },
     "require-dev": {
         "ext-json": "*",
