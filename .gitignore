@@ -5,12 +5,14 @@
 composer.phar
 /composer.lock
 
+
 .php_cs.cache
 .phpunit.result.cache
 .phpunit.xdebug-filter.php
 
 infection.log
 
+/.build/composer.lock
 /.build/infection/
 !/.build/infection/.gitkeep
 /.build/php-cs-fixer/
