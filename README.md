@@ -1,10 +1,10 @@
-# php-library-template
+# Php-library-template
 
 Provides a GitHub repository template for a Narrowspark PHP library, using GitHub actions.
 
 ## Installation
 
-:bulb: This is a great place for showing how to install the package, see below:
+:bulb: this is a great place for showing how to install the package, see below:
 
 Run
 
@@ -14,7 +14,7 @@ $ composer require narrowspark/php-library-template
 
 ## Usage
 
-:bulb: This is a great place for showing a few usage examples!
+:bulb: this is a great place for showing, usage examples
 
 ## Versioning
 
