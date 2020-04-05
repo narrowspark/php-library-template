@@ -1,4 +1,4 @@
-# Php-library-template
+# PHP library template
 
 Provides a GitHub repository template for a Narrowspark PHP library, using GitHub actions.
 
