@@ -1,5 +1,7 @@
 includes:
     - %currentWorkingDirectory%/vendor/narrowspark/coding-standard/base_rules.neon
+    - %currentWorkingDirectory%/phpstan-baseline.neon
+    - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
 
 parameters:
     paths:
