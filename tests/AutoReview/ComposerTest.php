@@ -37,7 +37,7 @@ final class ComposerTest extends TestCase
     {
         /** @var array<string, mixed> $composerJson */
         $composerJson = json_decode(
-            (string) file_get_contents(__DIR__ . '/../../composer.json'),
+            (string) \Safe\file_get_contents(__DIR__ . '/../../composer.json'),
             true,
             512,
             \JSON_THROW_ON_ERROR
@@ -60,6 +60,6 @@ final class ComposerTest extends TestCase
     {
         $parts = explode('.', $version, 3);
 
-        return sprintf('%d.%d-dev', $parts[0], $parts[1]);
+        return \Safe\sprintf('%d.%d-dev', $parts[0], $parts[1]);
     }
 }
