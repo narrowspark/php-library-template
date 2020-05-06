@@ -91,9 +91,6 @@ jobs:
       - name: "Check PHP Version"
         run: php -v
 
-      #- name: "List all php extensions with versions"
-      #  run: php -r 'foreach (get_loaded_extensions() as $extension) echo $extension . " " . phpversion($extension) . PHP_EOL;'
-
       - name: "Setup Problem Matchers for PHPUnit"
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
