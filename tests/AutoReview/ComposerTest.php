@@ -37,7 +37,7 @@ final class ComposerTest extends TestCase
     {
         /** @var array<string, mixed> $composerJson */
         $composerJson = json_decode(
-            (string) \Safe\file_get_contents(__DIR__ . '/../../composer.json'),
+            \Safe\file_get_contents(__DIR__ . '/../../composer.json'),
             true,
             512,
             \JSON_THROW_ON_ERROR
