@@ -28,7 +28,7 @@ labels:
     description: "Changelog Changed"
     color: fbca04
 
-  - name: dependency
+  - name: "Dependency update"
     description: "Pull requests that update a dependency file"
     color: e1f788
 
@@ -85,7 +85,7 @@ labels:
     color: 000000
 
   - name: "semantic-release"
-    color: ""
+    color: 72e088
 
 repository:
   allow_merge_commit: true
