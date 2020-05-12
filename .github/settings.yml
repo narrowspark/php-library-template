@@ -85,7 +85,7 @@ labels:
     color: 000000
 
   - name: "semantic-release"
-    color: 72e088
+    color: ff0000
 
 repository:
   allow_merge_commit: true
