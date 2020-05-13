@@ -13,34 +13,22 @@ on:
       - beta
 
 jobs:
-  text-lint:
+  semantic-release:
     name: "Semantic Release"
 
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: "Semantic Release"
+        uses: cycjimmy/semantic-release-action@v2
         with:
-          fetch-depth: 2
-
-      - name: "Setup node"
-        uses: actions/setup-node@v1
-        with:
-          node-version: "12.16.3"
-
-      - name: "Cache dependencies"
-        uses: actions/cache@v1
-        with:
-          key: npm-${{ hashFiles('package-lock.json') }}
-          path: ~/.npm
-          restore-keys: |
-            npm-
-
-      - name: "Install dependencies"
-        run: npm ci --ignore-scripts --no-audit --no-progress --prefer-offline
-
-      - name: "Release"
-        if: ${{ github.repository != 'narrowspark/php-library-template' }}
-        run: npx semantic-release
+          semantic_version: 17.0.7
+          extra_plugins: |
+            @semantic-release/changelog@^5.0.1
+            @semantic-release/git@^9.0.0
+            @google/semantic-release-replace-plugin@^1.0.0
+            conventional-changelog-conventionalcommits@^4.3.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_GITHUB_TOKEN }}
