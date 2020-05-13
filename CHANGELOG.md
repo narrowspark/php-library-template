@@ -1,3 +1,10 @@
+### [1.0.1](https://github.com/PrisisForks/php-library-template/compare/v1.0.0...v1.0.1) (2020-05-13)
+
+
+### Bug Fixes
+
+* changed c. message to conventional commits ([4a718ac](https://github.com/PrisisForks/php-library-template/commit/4a718ac29e0e5b0574ff565b80de1c7ec82169a6))
+
 ## 1.0.0 (2020-05-12)
 
 
