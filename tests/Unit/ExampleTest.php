@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2020 Daniel Bannert
+ * Copyright (c) 2020-2021 Daniel Bannert
  *
  * For the full copyright and license information, please view
  * the LICENSE.md file that was distributed with this source code.
@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Narrowspark\Library\Tests\Unit;
 
 use Narrowspark\Library\Example;
-use PHPUnit\Framework;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal
@@ -23,7 +23,7 @@ use PHPUnit\Framework;
  *
  * @small
  */
-final class ExampleTest extends Framework\TestCase
+final class ExampleTest extends TestCase
 {
     public function testFromNameReturnsExample(): void
     {

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2020 Daniel Bannert
+ * Copyright (c) 2020-2021 Daniel Bannert
  *
  * For the full copyright and license information, please view
  * the LICENSE.md file that was distributed with this source code.
@@ -15,17 +15,13 @@ namespace Narrowspark\Library;
 
 final class Example
 {
-    /** @var string */
-    private string $name;
-
-    private function __construct(string $name)
+    private function __construct(private string $_name)
     {
-        $this->name = $name;
     }
 
     public function name(): string
     {
-        return $this->name;
+        return $this->_name;
     }
 
     public static function fromName(string $name): self
