@@ -53,6 +53,6 @@
   },
   "devDependencies": {
     "minimist": ">=1.2.5",
-    "yargs-parser": ">=20.2.6"
+    "yargs-parser": ">=20.2.7"
   }
 }
