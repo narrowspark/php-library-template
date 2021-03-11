@@ -56,6 +56,8 @@
         "phpstan": "phpstan analyse -c ./phpstan.neon --ansi --memory-limit=-1",
         "phpstan:baseline": "phpstan analyse -c ./phpstan.neon --ansi --generate-baseline --memory-limit=-1",
         "psalm": "psalm --threads=$(nproc)",
+        "psalm:baseline": "psalm --threads=$(nproc) --set-baseline=psalm-baseline.xml",
+        "psalm:baseline:update": "psalm --threads=$(nproc) --update-baseline",
         "psalm:fix": "psalm --alter --issues=all --threads=$(nproc)",
         "rector": "rector process --ansi --dry-run",
         "rector:fix": "rector process --ansi",
