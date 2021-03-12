@@ -3,8 +3,8 @@
 branches:
     - name: "main"
 
-    # https://docs.github.com/en/rest/reference/repos#delete-branch-protection
-    # https://docs.github.com/en/rest/reference/repos#update-branch-protection
+      # https://docs.github.com/en/rest/reference/repos#delete-branch-protection
+      # https://docs.github.com/en/rest/reference/repos#update-branch-protection
 
       protection:
           enforce_admins: false
@@ -15,7 +15,7 @@ branches:
               required_approving_review_count: 1
 
           required_status_checks:
-#              contexts:
+              contexts: []
 
               strict: false
 
@@ -29,7 +29,7 @@ branches:
                   - "semantic-release-bot"
                   - "renovate"
               teams: []
-#             users: []
+#               users: []
 
 # https://docs.github.com/en/rest/reference/issues#create-a-label
 # https://docs.github.com/en/rest/reference/issues#update-a-label

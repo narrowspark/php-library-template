@@ -3,34 +3,34 @@
 name: "Yaml Lint"
 
 on: # yamllint disable-line rule:truthy
-  push:
-    paths:
-      - "**.yml"
-      - "**.yaml"
-  pull_request:
-    paths:
-      - "**.yml"
-      - "**.yaml"
+    push:
+        paths:
+            - "**.yml"
+            - "**.yaml"
+    pull_request:
+        paths:
+            - "**.yml"
+            - "**.yaml"
 
 jobs:
-  text-lint:
-    name: "Yaml lint"
+    yaml-lint:
+        name: "Yaml lint"
 
-    runs-on: ubuntu-latest
+        runs-on: "ubuntu-latest"
 
-    steps:
-      - name: "Git checkout"
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 2
-        env:
-          GIT_COMMITTER_NAME: "GitHub Actions Shell"
-          GIT_AUTHOR_NAME: "GitHub Actions Shell"
-          EMAIL: "github-actions[bot]@users.noreply.github.com"
+        steps:
+            - name: "Git checkout"
+              uses: "actions/checkout@v2"
+              with:
+                  fetch-depth: 2
+              env:
+                  GIT_COMMITTER_NAME: "GitHub Actions Shell"
+                  GIT_AUTHOR_NAME: "GitHub Actions Shell"
+                  EMAIL: "github-actions[bot]@users.noreply.github.com"
 
-      - name: "Lint YAML files"
-        uses: "ibiqlik/action-yamllint@v3"
-        with:
-          config_file: ".yamllint.yaml"
-          file_or_dir: "."
-          strict: true
+            - name: "Lint YAML files"
+              uses: "ibiqlik/action-yamllint@v3"
+              with:
+                  config_file: ".yamllint.yaml"
+                  file_or_dir: "."
+                  strict: true
