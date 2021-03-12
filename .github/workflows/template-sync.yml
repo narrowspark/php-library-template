@@ -1,6 +1,6 @@
 name: 'Github Template Sync'
 
-on:
+on: # yamllint disable-line rule:truthy
   schedule:
     - cron: '0 * * * *'
 

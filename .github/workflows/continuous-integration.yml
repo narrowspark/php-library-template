@@ -2,7 +2,7 @@
 
 name: "Continuous Integration"
 
-on:
+on: # yamllint disable-line rule:truthy
   push:
     paths:
       - "**.php"
