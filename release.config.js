@@ -30,16 +30,7 @@ module.exports = {
                             "composer.json"
                         ],
                         "from": "\"dev-master\": \".*\"",
-                        "to": "\"dev-master\": \"${nextRelease.version.replace(/\\.\\w+$/, '-dev')}\"",
-                        "results": [
-                            {
-                                "file": "composer.json",
-                                "hasChanged": true,
-                                "numMatches": 1,
-                                "numReplacements": 1
-                            }
-                        ],
-                        "countMatches": true
+                        "to": "\"dev-master\": \"${nextRelease.version.replace(/\\.\\w+$/, '-dev')}\""
                     }
                 ]
             }
