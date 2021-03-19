@@ -54,7 +54,8 @@ module.exports = {
                     "LICENSE.md",
                     "README.md",
                     "UPGRADE.md"
-                ]
+                ],
+                "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
             }
         ]
     ]
