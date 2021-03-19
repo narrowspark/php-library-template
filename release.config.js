@@ -42,6 +42,20 @@ module.exports = {
             }
         ],
         "@semantic-release/changelog",
-        "@semantic-release/github"
+        [
+            "@semantic-release/github",
+            {
+                "assets": [
+                    "docs/**",
+                    "src/**",
+                    "CHANGELOG.md",
+                    "composer.json",
+                    "composer.lock",
+                    "LICENSE.md",
+                    "README.md",
+                    "UPGRADE.md"
+                ]
+            }
+        ]
     ]
 }
