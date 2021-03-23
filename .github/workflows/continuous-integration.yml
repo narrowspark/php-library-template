@@ -13,7 +13,7 @@ on: # yamllint disable-line rule:truthy
             - "composer.json"
 
 jobs:
-    LinuxIntegration:
+    linux-integration:
         name: "PHP ${{ matrix.php-versions }} Test on ubuntu-latest OS with ${{ matrix.dependencies }} dependencies"
 
         runs-on: "ubuntu-latest"
@@ -114,7 +114,7 @@ jobs:
                   name: "linux_clover"
                   path: "./.build/phpunit/coverage/clover.xml"
 
-    WindowsIntegration:
+    windows-integration:
         name: "PHP ${{ matrix.php-versions }} Test on windows-latest OS with ${{ matrix.dependencies }} dependencies"
 
         runs-on: "windows-latest"
@@ -221,7 +221,7 @@ jobs:
                   name: "windows_clover"
                   path: "./.build/phpunit/coverage/clover.xml"
 
-    Coverage:
+    coverage:
         needs: ["LinuxIntegration", "WindowsIntegration"]
 
         runs-on: "ubuntu-latest"

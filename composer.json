@@ -21,7 +21,7 @@
     },
     "require-dev": {
         "ext-json": "*",
-        "narrowspark/coding-standard": "^5.2.1",
+        "narrowspark/coding-standard": "^5.2.3",
         "phpunit/phpunit": "^9.5.2",
         "thecodingmachine/phpstan-safe-rule": "^1.0.1"
     },
