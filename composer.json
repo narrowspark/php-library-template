@@ -52,7 +52,7 @@
     "scripts": {
         "cs": "php-cs-fixer fix --config=\"./.php_cs\" --ansi",
         "cs:check": "php-cs-fixer fix --config=\"./.php_cs\" --ansi --dry-run",
-        "infection": "XDEBUG_MODE=coverage infection --configuration=\"./infection.json\" -j$(nproc) --ansi",
+        "infection": "infection --configuration=\"./infection.json\" -j$(nproc) --ansi",
         "phpstan": "phpstan analyse -c ./phpstan.neon --ansi --memory-limit=-1",
         "phpstan:baseline": "phpstan analyse -c ./phpstan.neon --ansi --generate-baseline --memory-limit=-1",
         "psalm": "psalm --threads=$(nproc)",
