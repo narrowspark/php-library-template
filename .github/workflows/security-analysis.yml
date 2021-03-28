@@ -1,14 +1,20 @@
 # https://help.github.com/en/categories/automating-your-workflow-with-github-actions
 
-name: "License update"
+name: "Security Analysis"
 
 on: # yamllint disable-line rule:truthy
-    schedule:
-        - cron: "1 0 1 1 *"
+    push:
+        paths:
+            - "**.php"
+            - "composer.json"
+    pull_request:
+        paths:
+            - "**.php"
+            - "composer.json"
 
 jobs:
-    narrowspark-license-update:
-        name: "License update"
+    security-analysis:
+        name: "Security Analysis"
 
         runs-on: "ubuntu-latest"
 
@@ -18,10 +24,10 @@ jobs:
                 dependencies: ["locked"]
 
         env:
-            key: "license-update-linux-v1" # change key (version) to clear cache
+            key: "security-analysis-v1" # change key (version) to clear cache
             extensions: "mbstring"
             ini-values: "date.timezone=Europe/Berlin, assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=0, opcache.optimization_level=-1, opcache.jit=1255, opcache.jit_buffer_size=32M, serialize_precision=14"
-            tools: "composer:v2, cs2pr"
+            tools: "composer:v2"
 
         steps:
             - name: "Git checkout"
@@ -88,13 +94,5 @@ jobs:
               with:
                   dependency-versions: "${{ matrix.dependencies }}"
 
-            - name: "Run friendsofphp/php-cs-fixer"
-              run: "composer cs -- --diff --diff-format=udiff --verbose"
-
-            - name: "Commit modified files"
-              uses: "stefanzweifel/git-auto-commit-action@v4.9.1"
-              with:
-                  commit_author: "Daniel Bannert <d.banner@anolilab.de>"
-                  commit_message: "Enhancement: Update license year"
-                  commit_user_email: "d.banner@anolilab.de"
-                  commit_user_name: "prisis"
+            - name: "running security analysis ( psalm )"
+              run: "vendor/bin/psalm  --output-format=github  --taint-analysis"
